@@ -1,3 +1,5 @@
+plugin = {
+
 Plot = function(hist) {
     this.isTProfile = function() {
         return (this.type == "TProfile")
@@ -1456,4 +1458,5 @@ function drawZoomPlot(dataUrl, prevZoomData, w, h) {
 	} else {
 		redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
 	}
+}
 }
