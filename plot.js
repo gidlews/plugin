@@ -1,5 +1,4 @@
-var plugin = {
-
+plugin = function() {
 Plot = function(hist) {
     this.isTProfile = function() {
         return (this.type == "TProfile")
