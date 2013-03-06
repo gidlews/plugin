@@ -392,7 +392,8 @@ function drawMini(content, svg, width, height, start) {
 }
 //function drawHist(content, div, width, height, start) {
 function drawHist(content, svg, width, height, start, url) {
-
+	width *= 0.7;
+	height *= 0.7;
 	//height -= 20; width -= 20;
 //    var main = div.append("svg").style("display","relative")
     try {
