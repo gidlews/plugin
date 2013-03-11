@@ -1,32 +1,4 @@
 NAME = function() {
-    this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
-        if(dataUrl == null || dataUrl == "" || w < 10 || h < 10)
-            return;
-        if(w == null && h == null) {
-            w = prevZoomData.w;
-            h = prevZoomData.h;
-        }
-        if(prevZoomData.url == dataUrl && Math.abs(h - prevZoomData.h) < 5 && Math.abs(w - prevZoomData.w) < 5)
-            return;
-
-        prevZoomData.w = w;
-        prevZoomData.h = h;
-        var extJsonWinDiv = d3.select("#jsonPlotDiv");
-        if(dataUrl != prevZoomData.url) {
-            d3.json(dataUrl, function(data) {
-                extJsonWinDiv.selectAll("*").remove();
-                var svg = 
-                    extJsonWinDiv.append("svg")
-                    .attr("height",h)
-                    .attr("width",w);
-                prevZoomData.url = dataUrl;
-                prevZoomData.json = data;
-                drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
-            })
-        } else {
-            redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
-        }
-    }
     Plot = function(hist) {
         this.isTProfile = function() {
             return (this.type == "TProfile")
@@ -1458,5 +1430,35 @@ NAME = function() {
             drawHist(json, div2, svgWidth/2, svgHeight/2, start);
         }
     }
+    this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
+        if(dataUrl == null || dataUrl == "" || w < 10 || h < 10)
+            return;
+        if(w == null && h == null) {
+            w = prevZoomData.w;
+            h = prevZoomData.h;
+        }
+        if(prevZoomData.url == dataUrl && Math.abs(h - prevZoomData.h) < 5 && Math.abs(w - prevZoomData.w) < 5)
+            return;
+
+        prevZoomData.w = w;
+        prevZoomData.h = h;
+        var extJsonWinDiv = d3.select("#jsonPlotDiv");
+        if(dataUrl != prevZoomData.url) {
+            d3.json(dataUrl, function(data) {
+                extJsonWinDiv.selectAll("*").remove();
+                var svg = 
+                    extJsonWinDiv.append("svg")
+                    .attr("height",h)
+                    .attr("width",w);
+                prevZoomData.url = dataUrl;
+                prevZoomData.json = data;
+                drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
+            })
+        } else {
+            redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
+        }
+    }
+    
+    
     return this;
 }
