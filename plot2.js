@@ -1458,5 +1458,5 @@ NAME = function() {
             drawHist(json, div2, svgWidth/2, svgHeight/2, start);
         }
     }
-
+    return this;
 }
