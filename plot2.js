@@ -1430,7 +1430,7 @@ function draw(json) {
         drawHist(json, div2, svgWidth/2, svgHeight/2, start);
     }
 }
-function drawZoomPlot(dataUrl, prevZoomData, w, h) {
+this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
     if(dataUrl == null || dataUrl == "" || w < 10 || h < 10)
         return;
 	if(w == null && h == null) {
