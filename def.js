@@ -1457,4 +1457,5 @@ function drawZoomPlot(dataUrl, prevZoomData, w, h) {
 		redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
 	}
 }
+return this; 
 }
