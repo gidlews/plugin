@@ -387,7 +387,7 @@ plugin = function() {
         if(this.isTH2() && !hist.bins.lowEdgeY)
             this.bins.defWidthY = (hist.yaxis.last.value - hist.yaxis.first.value) / this.bins.yLen();
     }
-    function drawMini(content, svg, width, height, start) {
+    this.drawMini = function(content, svg, width, height, start) {
             svg = svg.append("g").attr("transform","scale(0.5)");
             drawHist(content, svg, width*2, height*2, start);
     }
