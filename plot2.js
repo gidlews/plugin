@@ -392,7 +392,7 @@ plugin = function() {
             drawHist(content, svg, width*2, height*2, start);
     }
     //function drawHist(content, div, width, height, start) {
-    function drawHist(content, svg, width, height, start, url) {
+    this.drawHist = function(content, svg, width, height, start, url) {
     	width *= 0.7;
     	height *= 0.7;
     	//height -= 20; width -= 20;
