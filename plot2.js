@@ -1431,6 +1431,7 @@ plugin = function() {
         }
     }
     this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
+        alert("tu nie tam")
         if(dataUrl == null || dataUrl == "" || w < 10 || h < 10)
             return;
         if(w == null && h == null) {
