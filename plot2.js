@@ -1455,7 +1455,7 @@ plugin = function() {
                     .attr("width",w);
                 prevZoomData.url = dataUrl;
                 prevZoomData.json = data;
-                this.drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
+                drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
             })
         } else {
             redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
