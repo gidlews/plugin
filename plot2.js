@@ -389,7 +389,7 @@ function plugin() {
     }
     this.drawMini = function(content, svg, width, height, start) {
             svg = svg.append("g").attr("transform","scale(0.5)");
-            drawHist(content, svg, width*2, height*2, start);
+            self.drawHist(content, svg, width*2, height*2, start);
     }
     //function drawHist(content, div, width, height, start) {
 
@@ -537,7 +537,7 @@ function plugin() {
         }
     }
     this.organiseXLabels = function(main, min) {
-        organiseLabels(main, main.select("#xaxis"), min);
+        self.organiseLabels(main, main.select("#xaxis"), min);
         for(var i = 1; i != main.select("#xaxis").selectAll("text")[0].length-1; ++i) {
            x1 = main.select("#xaxis").selectAll("text")[0][i-1];
            x2 = main.select("#xaxis").selectAll("text")[0][i];
@@ -579,10 +579,10 @@ function plugin() {
         )
     }
     this.organiseYLabels = function(main, min) {
-        organiseLabels(main, main.select("#yaxis"), min);
+        self.organiseLabels(main, main.select("#yaxis"), min);
     }
     this.organiseZLabels = function(main, min) {
-        organiseLabels(main, main.select("#zaxis"), min);
+        self.organiseLabels(main, main.select("#zaxis"), min);
     }
     this.checkDqmLimits = function(plot) {
         if(plot.dqm.xAxis.min != null || plot.dqm.xAxis.max != null) {
@@ -630,7 +630,7 @@ function plugin() {
         }   
     }
      this.prepareAxis = function(main, svg, plot, hist) {
-        checkDqmLimits(plot); 
+        self.checkDqmLimits(plot); 
         if(plot.dqm.xAxis.type=="log") {
             plot.x.scale = d3.scale.log();
             plot.x.log = true;
@@ -766,9 +766,9 @@ function plugin() {
          .call(xAxis);
         xAxisArea.attr("transform", "translate(0," + (plot.area.height +1)+ ")")
         if(hist.xaxis.labels) 
-            drawXLabels(svg,hist,plot);  
+            self.drawXLabels(svg,hist,plot);  
         else 
-            organiseXLabels(svg, plot.x.min.value)
+            self.organiseXLabels(svg, plot.x.min.value)
             
         if(hist.xaxis.title) {
             var xAxisBox = svg.select("#xaxis").node().getBBox();
@@ -810,7 +810,7 @@ function plugin() {
         .attr("id","yaxisscale")
         .call(yAxis);
         
-        organiseYLabels(svg, plot.y.min.value || plot.y.min)
+        self.organiseYLabels(svg, plot.y.min.value || plot.y.min)
         
         yAxisArea.attr("transform", "translate(-1,-1)")
     /*    if(isTH1(hist.type) && content.dqmInfo.yAxis.type == "log") {
@@ -1058,7 +1058,7 @@ function plugin() {
                 .attr("transform", "translate("+(zAxisBox.x+zAxisBox.width)+",0)")
                 .attr("id","zaxis")
                 .call(zAxis);
-            organiseZLabels(main, plot.z.min)
+            self.organiseZLabels(main, plot.z.min)
             var zTitleSize = 1.5;
             var zLabelSize = 10;
             var zTicksLane = 10;
@@ -1085,7 +1085,7 @@ function plugin() {
             statsBox.append("g")
                 .attr("id", "mainHistStats")
                 .attr("transform","translate(0,18)");
-        drawStatsBox(svg, plot, hist, mainHistStats,statsBoxWidth,0)
+        self.drawStatsBox(svg, plot, hist, mainHistStats,statsBoxWidth,0)
         if(plot.isTH1()) {
             var statsBoxSize = svg.select("#mainHistStats").node().getBBox();
             var deltaY = 18;
@@ -1096,7 +1096,7 @@ function plugin() {
                     statsBox.append("g")
                         .attr("id", "histStats"+i)
                         .attr("transform","translate(0,"+(deltaY)+")");
-                drawStatsBox(svg, new Plot(overlayHist), overlayHist, mainHistStats,statsBoxWidth,i)
+                self.drawStatsBox(svg, new Plot(overlayHist), overlayHist, mainHistStats,statsBoxWidth,i)
                 statsBoxSize = svg.select("#histStats"+i).node().getBBox();
             }    
         }
@@ -1123,10 +1123,10 @@ function plugin() {
             .attr("id", "statsNames")
             .attr("font-weight", "bold")
             .attr("transform","translate("+(2)+","+0+")")
-            .attr("fill",colorOfNo(no));
+            .attr("fill",self.colorOfNo(no));
         var statsVals = statsBox.append("text")
             .attr("id", "statsVals")
-            .attr("fill",colorOfNo(no))
+            .attr("fill",self.colorOfNo(no))
             .attr("transform","translate("+(2)+","+0+")")
         for(var k in hist.stats) {
             statsNames
@@ -1267,7 +1267,7 @@ function plugin() {
                 || overlayPlot.bins.bins(i) < plot.y.scale.domain()[0]) {
                 return "none"
             } else {
-                return colorOfNo(no)
+                return self.colorOfNo(no)
             };
         });
     
@@ -1277,7 +1277,7 @@ function plugin() {
         .attr("x2",function(d) {return plot.x.scale(d.x+d.width/2)})
         .attr("y1",function(d,i) {return plot.y.scale(((overlayPlot.bins.bins(i) -overlayPlot.bins.error(i)))) })
         .attr("y2",function(d,i) {return plot.y.scale(((overlayPlot.bins.bins(i) +overlayPlot.bins.error(i)))) })
-        .attr("stroke",colorOfNo(no));
+        .attr("stroke",self.colorOfNo(no));
         
         plotArea.selectAll(".errorTop").data(stepBins).enter().append("line")
         .attr("class","errorTop")
@@ -1291,7 +1291,7 @@ function plugin() {
                     || (overlayPlot.bins.bins(i) +overlayPlot.bins.error(i)) < plot.y.scale.domain()[0]) {
                 return "none";
             } else {
-                return colorOfNo(no)
+                return self.colorOfNo(no)
             }
          });
         
@@ -1308,7 +1308,7 @@ function plugin() {
                     || (overlayPlot.bins.bins(i) -overlayPlot.bins.error(i)) < plot.y.scale.domain()[0]) {
                 return "none"
             } else {
-                return colorOfNo(no)
+                return self.colorOfNo(no)
             }
          });
     }
@@ -1317,14 +1317,14 @@ function plugin() {
             return;
         prevZoomData.w = w-2;
         prevZoomData.h = h-1;
-        redraw(prevZoomData, w-2, h-1, prevZoomData.url.replace("jsonfairy","editfairy"));
+        self.redraw(prevZoomData, w-2, h-1, prevZoomData.url.replace("jsonfairy","editfairy"));
     }
     this.redraw = function(prevZoomData, w, h, url) {
         var start = new Date();
         var extJsonWinDiv = d3.select("#jsonPlotDiv");
         extJsonWinDiv.select("svg").remove()
         var svg = extJsonWinDiv.append("svg").attr("width",w).attr("height",h)
-        drawHist(prevZoomData.json, svg, w, h, start, url);
+        self.drawHist(prevZoomData.json, svg, w, h, start, url);
     }
     this.draw = function(json) {
         var start = new Date();
@@ -1338,13 +1338,13 @@ function plugin() {
                    .append("div")
                    .attr("id","content")
         
-        drawHist(json, div, svgWidth, svgHeight, start);
+        self.drawHist(json, div, svgWidth, svgHeight, start);
         if(!(parent && parent.GUI)) {
             var div2= d3.select("body")
                 .append("div")
                 .attr("id","content2")
                 
-            drawHist(json, div2, svgWidth/2, svgHeight/2, start);
+            self.drawHist(json, div2, svgWidth/2, svgHeight/2, start);
         }
     }
     this.drawHist = function(content, svg, width, height, start, url) {
@@ -1373,7 +1373,7 @@ function plugin() {
             .attr("width", width)
             .attr("height", height)
          
-            drawTitleArea(svg, json.hist, plot, width)
+            self.drawTitleArea(svg, json.hist, plot, width)
             
             main = svg
                    .append("g")
@@ -1382,12 +1382,12 @@ function plugin() {
             plot.area.width = width - plot.area.margin.left - plot.area.margin.right;
             plot.area.height = height - plot.area.margin.top - plot.area.margin.bottom;
             plot.dqm = content.dqmInfo;
-            prepareAxis(main,svg,plot,json.hist);
-            drawAxis(main,svg,plot,json.hist);
+            self.prepareAxis(main,svg,plot,json.hist);
+            self.drawAxis(main,svg,plot,json.hist);
             if(plot.isTH2()) {
-                drawTH2bins(main,json.hist, plot);
+                self.drawTH2bins(main,json.hist, plot);
             } else {
-                var stepBins = drawTH1bins(main, json.hist, plot);
+                var stepBins = self.drawTH1bins(main, json.hist, plot);
                 if(content.list.length > 1) {
                     for(var i=1; i < content.list.length; ++i) {
                         var overlayHist = content.list[i].hist;
@@ -1395,11 +1395,11 @@ function plugin() {
                         overlayPlot.x.scale = plot.x.scale;
                         overlayPlot.x.setScaleLimit(plot.x.min.id, plot.x.max.id)
                         if(overlayHist.values.min != 0 || overlayHist.values.max != 0)
-                            drawOverlay(main, plot, overlayPlot, stepBins, i)
+                            self.drawOverlay(main, plot, overlayPlot, stepBins, i)
                     }
                 }
             }
-            drawStats(svg, content, plot, width);
+            self.drawStats(svg, content, plot, width);
     
             main.attr("transform", "translate(" + plot.area.margin.left + "," + (plot.area.margin.top) + ")");
     
@@ -1429,7 +1429,7 @@ function plugin() {
                   .attr("dominant-baseline","auto")//hanging
                   .attr("text-anchor","end")
         } catch (error) {
-            drawErrorBox(svg, error, width, height, true)
+            self.drawErrorBox(svg, error, width, height, true)
         }
     }
     this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
@@ -1455,10 +1455,10 @@ function plugin() {
                     .attr("width",w);
                 prevZoomData.url = dataUrl;
                 prevZoomData.json = data;
-                drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
+                self.drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
             })
         } else {
-            redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
+            self.redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
         }
     }
 }
