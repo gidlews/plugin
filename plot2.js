@@ -523,7 +523,7 @@ plugin = function() {
              .on("click",function() {main.select("#errorBox").attr("display","none")});
     } 
     
-    function drawTitleArea(main, hist, plot, width) {
+    this.drawTitleArea = function(main, hist, plot, width) {
         var titleHeight = 0;
         if(hist.title) {
             var title = main.append("g")
@@ -575,7 +575,7 @@ plugin = function() {
             .attr("text-anchor","middle")
             .attr("transform","translate("+statsBoxWidth/2+","+titleHeight/2+")");
     }
-    function drawXLabels(main, hist, plot) {
+    this.drawXLabels = function(main, hist, plot) {
         var gLabels = main.select("#xaxisscale")
         var oldLabel = main.select("#xaxisscale").select("text");
         main.select("#xaxisscale")
@@ -619,7 +619,7 @@ plugin = function() {
             }
         }
     }
-    function  organiseXLabels(main, min) {
+    this.organiseXLabels = function(main, min) {
         organiseLabels(main, main.select("#xaxis"), min);
         for(var i = 1; i != main.select("#xaxis").selectAll("text")[0].length-1; ++i) {
            x1 = main.select("#xaxis").selectAll("text")[0][i-1];
@@ -644,7 +644,7 @@ plugin = function() {
             }
         }
     }
-    function  organiseLabels(main, axisG, min) {
+    this.organiseLabels = function(main, axisG, min) {
         var s = d3.format("s");
         var minValPrecition = 4;
         if(min < 1)
@@ -661,13 +661,13 @@ plugin = function() {
             }
         )
     }
-    function  organiseYLabels(main, min) {
+    this.organiseYLabels = function(main, min) {
         organiseLabels(main, main.select("#yaxis"), min);
     }
-    function  organiseZLabels(main, min) {
+    this.organiseZLabels = function(main, min) {
         organiseLabels(main, main.select("#zaxis"), min);
     }
-    function checkDqmLimits(plot) {
+    this.checkDqmLimits = function(plot) {
         if(plot.dqm.xAxis.min != null || plot.dqm.xAxis.max != null) {
             if(plot.dqm.xAxis.min < json.hist.xaxis.first.value)
                 plot.dqm.xAxis.min = null;
@@ -712,7 +712,7 @@ plugin = function() {
             plot.z.customised = true;
         }   
     }
-    function prepareAxis(main, svg, plot, hist) {
+     this.prepareAxis = function(main, svg, plot, hist) {
         checkDqmLimits(plot); 
         if(plot.dqm.xAxis.type=="log") {
             plot.x.scale = d3.scale.log();
@@ -827,7 +827,7 @@ plugin = function() {
             }
         }
     }
-    function drawAxis(main, svg, plot, hist) {
+    this.drawAxis = function(main, svg, plot, hist) {
         var xAxis = d3.svg.axis()
         .scale(plot.x.scale)
         .orient("bottom");
@@ -996,7 +996,7 @@ plugin = function() {
             }
         }
     }
-    function colorOfNo(no) {
+    this.colorOfNo = function(no) {
         switch(no) {
         case 0: return "black"
         case 1: return "blue"
@@ -1006,7 +1006,7 @@ plugin = function() {
         }
     }
     
-    function drawTH1bins(main, hist, plot) {
+    this.drawTH1bins = function(main, hist, plot) {
         stepBins = [];
         for(var i = 0; i!=plot.bins.xLen(); ++i) {
             var tmp = {};
@@ -1079,7 +1079,7 @@ plugin = function() {
         return stepBins;
     }
     
-    function drawTH2bins(main, hist, plot) {
+    this.drawTH2bins = function(main, hist, plot) {
         var range = plot.area.height;
         var zColor = 
             d3.scale.linear()
@@ -1156,7 +1156,7 @@ plugin = function() {
             }
         }
     }
-    function drawStats(svg,content,plot, width) {
+    this.drawStats = function(svg,content,plot, width) {
         var hist = content.list[0].hist;
         var titleBox = svg.select("#title").node().getBBox();  
         var statsBoxWidth = 150, statsBoxHeight = 220; 
@@ -1194,7 +1194,7 @@ plugin = function() {
             .attr("class","link")
             .on("click",function() {d3.select("#statsBox").attr("display","none")});
     }
-    function drawStatsBox(svg, plot, hist, statsBox, statsBoxWidth, no) {
+    this.drawStatsBox = function(svg, plot, hist, statsBox, statsBoxWidth, no) {
         var statsRect = statsBox.append("rect")
             .attr("width",statsBoxWidth)
             .attr("height",10)
@@ -1335,7 +1335,7 @@ plugin = function() {
             statsRect.attr("height", statsBoxHeight+2+svg.select("#integral").node().getBBox().height);
         }
     }
-    function drawOverlay(svg, plot, overlayPlot, stepBins, no) {
+    this.drawOverlay = function(svg, plot, overlayPlot, stepBins, no) {
         var plotArea = svg.append("g").attr("id","overlay "+ no);
         plotArea.selectAll(".point").data(stepBins).enter().append("circle")
         .attr("class","point")
@@ -1402,14 +1402,14 @@ plugin = function() {
         prevZoomData.h = h-1;
         redraw(prevZoomData, w-2, h-1, prevZoomData.url.replace("jsonfairy","editfairy"));
     }
-    function redraw(prevZoomData, w, h, url) {
+    this.redraw = function(prevZoomData, w, h, url) {
         var start = new Date();
         var extJsonWinDiv = d3.select("#jsonPlotDiv");
         extJsonWinDiv.select("svg").remove()
         var svg = extJsonWinDiv.append("svg").attr("width",w).attr("height",h)
         drawHist(prevZoomData.json, svg, w, h, start, url);
     }
-    function draw(json) {
+    this.draw = function(json) {
         var start = new Date();
         if(parent && parent.GUI) {
             var extWin = parent.GUI.Plugin.DQMCanvas.getJsonWin();
