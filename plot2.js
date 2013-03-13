@@ -392,90 +392,7 @@ plugin = function() {
             drawHist(content, svg, width*2, height*2, start);
     }
     //function drawHist(content, div, width, height, start) {
-    this.drawHist = function(content, svg, width, height, start, url) {
-    	width *= 0.7;
-    	height *= 0.7;
-    	//height -= 20; width -= 20;
-    //    var main = div.append("svg").style("display","relative")
-        try {
-            var json = content.list[0];
-            if(!(json.hist.type == "TH2" 
-                || json.hist.type == "TProfile2D" 
-                || json.hist.type == "TH1"
-                || json.hist.type == "TProfile"))
-                return;
-            var vertMargin = Math.min(Math.max(height/10, 40), 60),
-                horiMargin = Math.min(Math.max(width/10, 35), 60);
-            var plot = new Plot(json.hist);
-            plot.area.margin = {
-                    top: Math.min(Math.max(height/10, 20), 60),
-                    right: (plot.isTH2() ? horiMargin: 0), 
-                    bottom: vertMargin, 
-                    left: horiMargin
-                };
-            svg
-            .attr("width", width)
-            .attr("height", height)
-         
-            drawTitleArea(svg, json.hist, plot, width)
-            
-            main = svg
-                   .append("g")
-                   .attr("transform", "translate(" + plot.area.margin.left + "," + plot.area.margin.top + ")");
-            
-            plot.area.width = width - plot.area.margin.left - plot.area.margin.right;
-            plot.area.height = height - plot.area.margin.top - plot.area.margin.bottom;
-            plot.dqm = content.dqmInfo;
-            prepareAxis(main,svg,plot,json.hist);
-            drawAxis(main,svg,plot,json.hist);
-            if(plot.isTH2()) {
-                drawTH2bins(main,json.hist, plot);
-            } else {
-                var stepBins = drawTH1bins(main, json.hist, plot);
-                if(content.list.length > 1) {
-                    for(var i=1; i < content.list.length; ++i) {
-                        var overlayHist = content.list[i].hist;
-                        var overlayPlot = new Plot(content.list[i].hist)
-                        overlayPlot.x.scale = plot.x.scale;
-                        overlayPlot.x.setScaleLimit(plot.x.min.id, plot.x.max.id)
-                        if(overlayHist.values.min != 0 || overlayHist.values.max != 0)
-                            drawOverlay(main, plot, overlayPlot, stepBins, i)
-                    }
-                }
-            }
-            drawStats(svg, content, plot, width);
-    
-            main.attr("transform", "translate(" + plot.area.margin.left + "," + (plot.area.margin.top) + ")");
-    
-            var svgBox =  document.getElementsByTagName("svg")[0].getBBox();
-            svg.select("content")
-             .style("width", svgBox.width+"px")
-             .style("height", svgBox.height+"px")
-    
-             svg.append("text")
-              .attr("id","generatedIn")
-              .text("generated in "+(new Date() - start)+" ms")
-              .attr("x",0)
-              .attr("y",height - 3)
-              .attr("font-size","7px")
-              .attr("font-family","Arial")
-              .attr("dominant-baseline","auto")//hanging
-              if(url != null)
-                 svg.append("a")
-                  .attr("id","edit")
-                  .attr("xlink:href",url)
-                  .attr("target","_black")
-                  .attr("transform","translate("+width+","+(height - 3)+")")
-                 .append("text")
-                  .text("edit")
-                  .attr("font-size","12px")
-                  .attr("font-family","Arial")
-                  .attr("dominant-baseline","auto")//hanging
-                  .attr("text-anchor","end")
-        } catch (error) {
-            drawErrorBox(svg, error, width, height, true)
-        }
-    }
+
     this.drawErrorBox = function(main, error, width, height, hide) {
         errorBox = main.append("g").attr("id","errorBox");
         errorBox.append("rect")
@@ -1430,6 +1347,91 @@ plugin = function() {
             drawHist(json, div2, svgWidth/2, svgHeight/2, start);
         }
     }
+    this.drawHist = function(content, svg, width, height, start, url) {
+        width *= 0.7;
+        height *= 0.7;
+        alert("plugin")
+        //height -= 20; width -= 20;
+    //    var main = div.append("svg").style("display","relative")
+        try {
+            var json = content.list[0];
+            if(!(json.hist.type == "TH2" 
+                || json.hist.type == "TProfile2D" 
+                || json.hist.type == "TH1"
+                || json.hist.type == "TProfile"))
+                return;
+            var vertMargin = Math.min(Math.max(height/10, 40), 60),
+                horiMargin = Math.min(Math.max(width/10, 35), 60);
+            var plot = new Plot(json.hist);
+            plot.area.margin = {
+                    top: Math.min(Math.max(height/10, 20), 60),
+                    right: (plot.isTH2() ? horiMargin: 0), 
+                    bottom: vertMargin, 
+                    left: horiMargin
+                };
+            svg
+            .attr("width", width)
+            .attr("height", height)
+         
+            drawTitleArea(svg, json.hist, plot, width)
+            
+            main = svg
+                   .append("g")
+                   .attr("transform", "translate(" + plot.area.margin.left + "," + plot.area.margin.top + ")");
+            
+            plot.area.width = width - plot.area.margin.left - plot.area.margin.right;
+            plot.area.height = height - plot.area.margin.top - plot.area.margin.bottom;
+            plot.dqm = content.dqmInfo;
+            prepareAxis(main,svg,plot,json.hist);
+            drawAxis(main,svg,plot,json.hist);
+            if(plot.isTH2()) {
+                drawTH2bins(main,json.hist, plot);
+            } else {
+                var stepBins = drawTH1bins(main, json.hist, plot);
+                if(content.list.length > 1) {
+                    for(var i=1; i < content.list.length; ++i) {
+                        var overlayHist = content.list[i].hist;
+                        var overlayPlot = new Plot(content.list[i].hist)
+                        overlayPlot.x.scale = plot.x.scale;
+                        overlayPlot.x.setScaleLimit(plot.x.min.id, plot.x.max.id)
+                        if(overlayHist.values.min != 0 || overlayHist.values.max != 0)
+                            drawOverlay(main, plot, overlayPlot, stepBins, i)
+                    }
+                }
+            }
+            drawStats(svg, content, plot, width);
+    
+            main.attr("transform", "translate(" + plot.area.margin.left + "," + (plot.area.margin.top) + ")");
+    
+            var svgBox =  document.getElementsByTagName("svg")[0].getBBox();
+            svg.select("content")
+             .style("width", svgBox.width+"px")
+             .style("height", svgBox.height+"px")
+    
+             svg.append("text")
+              .attr("id","generatedIn")
+              .text("generated in "+(new Date() - start)+" ms")
+              .attr("x",0)
+              .attr("y",height - 3)
+              .attr("font-size","7px")
+              .attr("font-family","Arial")
+              .attr("dominant-baseline","auto")//hanging
+              if(url != null)
+                 svg.append("a")
+                  .attr("id","edit")
+                  .attr("xlink:href",url)
+                  .attr("target","_black")
+                  .attr("transform","translate("+width+","+(height - 3)+")")
+                 .append("text")
+                  .text("edit")
+                  .attr("font-size","12px")
+                  .attr("font-family","Arial")
+                  .attr("dominant-baseline","auto")//hanging
+                  .attr("text-anchor","end")
+        } catch (error) {
+            drawErrorBox(svg, error, width, height, true)
+        }
+    }
     this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
         alert("tu nie tam")
         if(dataUrl == null || dataUrl == "" || w < 10 || h < 10)
@@ -1453,7 +1455,7 @@ plugin = function() {
                     .attr("width",w);
                 prevZoomData.url = dataUrl;
                 prevZoomData.json = data;
-                drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
+                this.drawHist(data, svg , w, h, new Date(), dataUrl.replace("jsonfairy","editfairy"));
             })
         } else {
             redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
