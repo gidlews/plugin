@@ -1,4 +1,4 @@
-plugin = function() {
+function plugin() {
     Plot = function(hist) {
         this.isTProfile = function() {
             return (this.type == "TProfile")
@@ -1461,7 +1461,4 @@ plugin = function() {
             redraw(prevZoomData,w,h, dataUrl.replace("jsonfairy","editfairy"));
         }
     }
-    
-    
-    return this;
 }
