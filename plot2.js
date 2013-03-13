@@ -1395,7 +1395,7 @@ plugin = function() {
             }
          });
     }
-    function redrawCheck(prevZoomData, w, h) {
+    this.redrawCheck function(prevZoomData, w, h) {
         if(prevZoomData.json == null || (Math.abs(h - prevZoomData.h) < 5 && Math.abs(w - prevZoomData.w) < 5))
             return;
         prevZoomData.w = w-2;
