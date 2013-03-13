@@ -1024,8 +1024,12 @@ var plugin = function() {
     
         rects
         .attr("x",function(d,i,j) {
-          if(j==1 || j==3 || j==5 || j==12 || j==14 || j==16)
+          if(j==1 || j==3 || j==5 || j==12 || j==14 || j==16){
+            if(2*plot.x.scale(plot.bins.lowEdgeX(i))> plot.area.width-plot.area.margin.left - plot.area.margin.right) {
+            d3.select(this).remove(); 
+            }
             return 2*plot.x.scale(plot.bins.lowEdgeX(i));
+          }
           return plot.x.scale(plot.bins.lowEdgeX(i));
         })
         .attr("width",function(d,i,j) {
