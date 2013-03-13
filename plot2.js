@@ -1351,7 +1351,6 @@ function plugin() {
     this.drawHist = function(content, svg, width, height, start, url) {
         width *= 0.7;
         height *= 0.7;
-        alert("plugin")
         //height -= 20; width -= 20;
     //    var main = div.append("svg").style("display","relative")
         try {
@@ -1434,7 +1433,6 @@ function plugin() {
         }
     }
     this.drawZoomPlot = function(dataUrl, prevZoomData, w, h) {
-        alert("tu nie tam")
         if(dataUrl == null || dataUrl == "" || w < 10 || h < 10)
             return;
         if(w == null && h == null) {
