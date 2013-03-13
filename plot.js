@@ -1,4 +1,4 @@
-var plugin = new function() {
+var plugin = function() {
     var self = this;
     Plot = function(hist) {
         this.isTProfile = function() {
