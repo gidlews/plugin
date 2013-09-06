@@ -475,7 +475,7 @@ this.drawHist = function(content, svg, width, height, start, url) {
         drawErrorBox(svg, error, width, height, true)
     }
 }
-function drawErrorBox(main, error, width, height, hide) {
+this.drawErrorBox = function(main, error, width, height, hide) {
     errorBox = main.append("g").attr("id","errorBox");
     errorBox.append("rect")
      .attr("x",width*0.05)
